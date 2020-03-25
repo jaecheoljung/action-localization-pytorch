@@ -1,7 +1,7 @@
 # Action Localization
 
 Step 1. Action recognition
- - 
+ - Accuracy : ?
  
 Step 2. Localization
  - To do.
@@ -9,7 +9,7 @@ Step 2. Localization
 
 ## Training
 
-[APS dataset](https://drive.google.com/file/d/1VFM1J2yem5L3m6Zabefv6Qveeh4DXnUj/view?usp=sharing)
+Download [APS dataset](https://drive.google.com/file/d/1VFM1J2yem5L3m6Zabefv6Qveeh4DXnUj/view?usp=sharing)
 
 Unzip dataset in root directory.
 
