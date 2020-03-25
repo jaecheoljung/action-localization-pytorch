@@ -14,9 +14,9 @@ Download [APS dataset](https://drive.google.com/file/d/1VFM1J2yem5L3m6Zabefv6Qve
 Unzip dataset in root directory.
 
 `python split_video.py aps_original aps_cut` 
-will make a new folder named 'data' and put all video images there.
+will make a new folder named 'aps_cut' and put all split videos there.
 
 `python train.py`
-will start training
+will make a new folder named 'data' and start training.
 
 if you want to test with unseen dataset, use `python test.py`
