@@ -15,6 +15,7 @@ Unzip dataset in root directory.
 
 `python split_video.py aps_original aps_cut` 
 will make a new folder named 'data' and put all video images there.
+
 `python train.py`
 will start training
 
