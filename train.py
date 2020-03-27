@@ -20,7 +20,7 @@ print("Device being used:", device)
 nEpochs = 50
 snapshot = 50  # Store a model every snapshot epochs
 lr = 1e-3
-batch_size = 16
+batch_size = 12
 num_workers = 4
 dataset = 'aps'
 modelName = 'C3D'
@@ -29,7 +29,10 @@ num_classes = 24
 save_dir_root = os.path.join(os.path.dirname(os.path.abspath(__file__)))
 runs = sorted(glob.glob(os.path.join(save_dir_root, 'run_*')))
 run_id = int(runs[-1].split('_')[-1]) + 1 if runs else 0
-save_dir = os.path.join(save_dir_root, 'run_' + str(run_id))
+run_dir = os.path.join(save_dir_root, 'run')
+if not os.path.exists(run_dir):
+	os.mkdir(run_dir)
+save_dir = os.path.join(run_dir, 'run_' + str(run_id))
 saveName = modelName + '-' + dataset
 
 def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=lr, num_epochs=nEpochs, save_epoch=snapshot):

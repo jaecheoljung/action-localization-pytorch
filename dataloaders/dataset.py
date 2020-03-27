@@ -1,3 +1,4 @@
+import random
 import os
 from sklearn.model_selection import train_test_split
 import torch
@@ -57,47 +58,34 @@ class VideoDataset(Dataset):
         return True
 
     def preprocess(self):
-        if not os.path.exists(self.output_dir):
-            os.mkdir(self.output_dir)
-            os.mkdir(os.path.join(self.output_dir, 'train'))
-            os.mkdir(os.path.join(self.output_dir, 'val'))
-            os.mkdir(os.path.join(self.output_dir, 'test'))
+        train_dir = os.path.join(self.output_dir, 'train')
+        val_dir = os.path.join(self.output_dir, 'val')
+        os.mkdir(self.output_dir)
+        os.mkdir(train_dir)
+        os.mkdir(val_dir)
 
-        for file in os.listdir(self.root_dir):
-            file_path = os.path.join(self.root_dir, file)
-            video_files = [name for name in os.listdir(file_path)]
-
-            train_and_valid, test = train_test_split(video_files, test_size=0.2, random_state=42)
-            train, val = train_test_split(train_and_valid, test_size=0.2, random_state=42)
-
-            train_dir = os.path.join(self.output_dir, 'train', file)
-            val_dir = os.path.join(self.output_dir, 'val', file)
-            test_dir = os.path.join(self.output_dir, 'test', file)
-
-            if not os.path.exists(train_dir):
-                os.mkdir(train_dir)
-            if not os.path.exists(val_dir):
-                os.mkdir(val_dir)
-            if not os.path.exists(test_dir):
-                os.mkdir(test_dir)
-
-            for video in train:
-                self.process_video(video, file, train_dir)
-
-            for video in val:
-                self.process_video(video, file, val_dir)
-
-            for video in test:
-                self.process_video(video, file, test_dir)
+        tv = ['train', 'val']
+        for i in tv:
+            for label in os.listdir(os.path.join(self.root_dir, i)):
+                dir_name = os.path.join(self.root_dir, i, label)
+                videos = os.listdir(dir_name)
+                for video in videos:
+                    if i == 'train':
+                        dst_name = os.path.join(train_dir, label)
+                    else:
+                        dst_name = os.path.join(val_dir, label)
+                    if not os.path.exists(dst_name):
+                        os.mkdir(dst_name)
+                    self.process_video(video, label, dir_name, dst_name)
 
         print('Preprocessing finished.')
 
-    def process_video(self, video, action_name, save_dir):
-        video_filename = video.split('.')[0]
-        if not os.path.exists(os.path.join(save_dir, video_filename)):
-            os.mkdir(os.path.join(save_dir, video_filename))
+    def process_video(self, video, action_name, dir_name, dst_name):
+        name = video.split('.')[0]
+        if not os.path.exists(os.path.join(dst_name, name)):
+            os.mkdir(os.path.join(dst_name, name))
 
-        capture = cv2.VideoCapture(os.path.join(self.root_dir, action_name, video))
+        capture = cv2.VideoCapture(os.path.join(dir_name, video))
 
         frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -124,7 +112,7 @@ class VideoDataset(Dataset):
             if count % EXTRACT_FREQUENCY == 0:
                 if (frame_height != self.resize_height) or (frame_width != self.resize_width):
                     frame = cv2.resize(frame, (self.resize_width, self.resize_height))
-                cv2.imwrite(filename=os.path.join(save_dir, video_filename, '%05d.jpg'%(i+1)), img=frame)
+                cv2.imwrite(filename=os.path.join(dst_name, name, '%05d.jpg'%(i+1)), img=frame)
                 i += 1
             count += 1
 
