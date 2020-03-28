@@ -1,6 +1,6 @@
 # Action Localization
 
-Step 1. Action recognition
+Step 1. Action recognition (modified. original code source: https://github.com/jfzhang95/pytorch-video-recognition)
  - Accuracy : ?
  
 Step 2. Localization
