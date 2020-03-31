@@ -29,7 +29,7 @@ will make a new folder named 'data' and start training.
 
 Training Results are like below.
 
-<p align="center"><img src="base-6-9-16-19.JPG" align="center"></p>
+<p align="center"><img src="6-9-16-19.JPG" align="center"></p>
 
 
 <p align="center"><img src="tensorboard.JPG" align="center"></p>
