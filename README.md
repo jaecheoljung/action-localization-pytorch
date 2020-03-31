@@ -8,9 +8,12 @@ Step 1. Action recognition (modified. original code source: https://github.com/j
  
 Step 2. Localization
  - Using YOLO v3 (modified. original code source: https://github.com/ayooshkathuria/pytorch-yolo-v3)
- 
- ![Localization Example](https://jay-jro5362.slack.com/files/UTE6ZM93J/F0113SSCKDK/output_9.mp4)
 
+<table style="border:0px">
+   <tr>
+       <td><img src="yolov3/video_output/demo.mp4" frame=void rules=none></td>
+   </tr>
+</table>
 
 ## Classification Training
 
@@ -26,7 +29,7 @@ will make a new folder named 'data' and start training.
 
 Training Results are like below.
 
-![Training Result](https://jay-jro5362.slack.com/files/UTE6ZM93J/F0113UGS2CQ/base-6-9-16-19.jpg)
+![Training Result](https://slack-files.com/TT1D7UWE6-F0113UGS2CQ-103250c6d8)
 
 ### YOLO v3
 Go to yolov3 directory.
