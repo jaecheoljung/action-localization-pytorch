@@ -17,10 +17,10 @@ if torch.cuda.is_available():
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("Device being used:", device)
 
-nEpochs = 50
+nEpochs = 100
 snapshot = 50  # Store a model every snapshot epochs
 lr = 1e-3
-batch_size = 12
+batch_size = 32
 num_workers = 4
 dataset = 'aps'
 modelName = 'C3D'
@@ -42,7 +42,7 @@ def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(train_params, lr=lr, momentum=0.9, weight_decay=5e-4)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
+    #scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 
     print("Training {} from scratch...".format(modelName))
     print('Total params: %.2fM' % (sum(p.numel() for p in model.parameters()) / 1000000.0))
@@ -61,6 +61,9 @@ def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=
     trainval_sizes = {x: len(trainval_loaders[x].dataset) for x in ['train', 'val']}
 
     for epoch in range(num_epochs):
+
+        confusion_matrix = torch.zeros(num_classes, num_classes)
+        
         for phase in ['train', 'val']:
             start_time = timeit.default_timer()
 
@@ -69,7 +72,7 @@ def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=
 
             if phase == 'train':
                 model.train()
-                scheduler.step()
+                #scheduler.step()
             else:
                 model.eval()
 
@@ -92,9 +95,12 @@ def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=
                     loss.backward()
                     optimizer.step()
 
+                for t, p in zip(labels.view(-1), preds.view(-1)):
+                    confusion_matrix[t.long(), p.long()] += 1
+
                 running_loss += loss.item() * inputs.size(0)
                 running_corrects += torch.sum(preds == labels.data)
-                
+
             epoch_loss = running_loss / trainval_sizes[phase]
             epoch_acc = running_corrects.double() / trainval_sizes[phase]
 
@@ -108,6 +114,8 @@ def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=
             print("[{}] Epoch: {}/{} Loss: {} Acc: {}".format(phase, epoch + 1, nEpochs, epoch_loss, epoch_acc))
             stop_time = timeit.default_timer()
             print("Execution time: " + str(stop_time - start_time) + "\n")
+
+            print(confusion_matrix.diag() / confusion_matrix.sum(1))
 
         if epoch % save_epoch == (save_epoch - 1):
             PATH = os.path.join(save_dir, saveName + '_epoch-' + str(epoch + 1) + '.pth.tar')

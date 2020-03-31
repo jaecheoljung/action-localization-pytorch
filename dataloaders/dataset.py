@@ -120,7 +120,7 @@ class VideoDataset(Dataset):
 
     def normalize(self, buffer):
         for i, frame in enumerate(buffer):
-            frame -= np.array([[[90.0, 98.0, 102.0]]])
+            frame -= np.array([[[112.0, 105.0, 103.0]]])
             buffer[i] = frame
 
         return buffer
@@ -148,18 +148,10 @@ class VideoDataset(Dataset):
                  width_index:width_index + crop_size, :]
 
         return buffer
+    
+    def center_crop(self, buffer, clip_len, crop_size):
+        time_index = np.random.randint(buffer.shape[0] - clip_len)
 
+        buffer = buffer[time_index:time_index + clip_len, 8:120, 30:142]
 
-if __name__ == "__main__":
-    from torch.utils.data import DataLoader
-    train_data = VideoDataset(dataset='aps', split='test', clip_len=8, preprocess=False)
-    train_loader = DataLoader(train_data, batch_size=100, shuffle=True, num_workers=4)
-
-    for i, sample in enumerate(train_loader):
-        inputs = sample[0]
-        labels = sample[1]
-        print(inputs.size())
-        print(labels)
-
-        if i == 1:
-            break
+        return buffer

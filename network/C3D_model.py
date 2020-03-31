@@ -16,17 +16,10 @@ class C3D(nn.Module):
         self.conv5 = nn.Conv3d(512, 512, kernel_size=(3, 3, 3), padding=(1, 1, 1))
         self.pool5 = nn.MaxPool3d(kernel_size=(2, 2, 2), stride=(2, 2, 2), padding=(0, 1, 1))
         self.fc6 = nn.Linear(8192, num_classes)
-        #self.dropout = nn.Dropout(p=0.5)
+        self.dropout = nn.Dropout(p=0.5)
         self.relu = nn.ReLU()
-        self.gradients = None
 
-    def hook(self, grad):
-        self.gradients = grad
-
-    def get_grad(self):
-        return self.gradients
-
-    def get_activation(self, x):
+    def forward(self, x):
         x = self.relu(self.conv1(x))
         x = self.pool1(x)
         x = self.relu(self.conv2(x))
@@ -36,17 +29,12 @@ class C3D(nn.Module):
         x = self.relu(self.conv4(x))
         x = self.pool4(x)
         x = self.relu(self.conv5(x))
-        return x
-
-    def forward(self, x):
-        x = self.get_activation(x)
-        #h = x.register_hook(self.hook)
         x = self.pool5(x)
         x = x.view(-1, 8192)
         logits = self.fc6(x)
         return logits
 
-
 if __name__ == "__main__":
-    model = C3D()
+    model = C3D().cuda()
+    print(model)
     summary(model, (3, 16, 112, 112))

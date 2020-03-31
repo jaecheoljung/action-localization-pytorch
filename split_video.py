@@ -32,7 +32,7 @@ if __name__=="__main__":
   		name, ext = os.path.splitext(video)
   		original_video_file = os.path.join(path, video)
   		new_video_file = os.path.join(dst, name)
-  		cmd = 'ffmpeg -i \"{}\" -c copy -map 0 -segment_time 8 -f segment \"{}\"c%03d.avi'.format(original_video_file, new_video_file)
+  		cmd = 'ffmpeg -i \"{}\" -acodec copy -f segment -segment_time 8 -vcodec copy -reset_timestamps 1 -map 0 \"{}\"c%03d.avi'.format(original_video_file, new_video_file)
   		print(cmd)
   		subprocess.call(cmd, shell=True)
   		print('\n')
