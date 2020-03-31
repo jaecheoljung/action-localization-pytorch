@@ -2,7 +2,11 @@
 
 Step 1. Action recognition (modified. original code source: https://github.com/jfzhang95/pytorch-video-recognition)
  - Accuracy
+ 
+ 
  Train accuracy over 98%
+ 
+ 
  Validation accuracy over 92%
  
  
