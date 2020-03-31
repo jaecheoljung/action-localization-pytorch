@@ -4,10 +4,10 @@ Step 1. Action recognition (modified. original code source: https://github.com/j
  - Accuracy
  
  
- Train accuracy over 98%
+   Train accuracy over 98%
  
  
- Validation accuracy over 92%
+   Validation accuracy over 92%
  
  
 Step 2. Localization
