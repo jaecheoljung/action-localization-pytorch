@@ -37,7 +37,9 @@ saveName = modelName + '-' + dataset
 
 def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=lr, num_epochs=nEpochs, save_epoch=snapshot):
     torch.cuda.empty_cache()
+    ##model = C3D_model.C3D_Dilation(num_classes=num_classes, pretrained=False)
     model = C3D_model.C3D(num_classes=num_classes, pretrained=False)
+    
     train_params = model.parameters()
 
     criterion = nn.CrossEntropyLoss()
@@ -62,9 +64,10 @@ def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=
 
     for epoch in range(num_epochs):
 
-        confusion_matrix = torch.zeros(num_classes, num_classes)
-        
         for phase in ['train', 'val']:
+        
+            confusion_matrix = torch.zeros(num_classes, num_classes)
+        
             start_time = timeit.default_timer()
 
             running_loss = 0.0

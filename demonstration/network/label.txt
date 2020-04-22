@@ -1,0 +1,24 @@
+1 I Have Command
+2 All Clear
+3 Not Clear
+4 Spread Wings
+5 Fold Wings
+6 Lock Wings
+7 Up Hook
+8 Down Hook
+9 Remove Tiedowns
+10 Remove Chocks
+11 Insert Chocks
+12 Move Ahead
+13 Turn Left
+14 Turn Right
+15 Next Marshaller
+16 Slow down
+17 Stop
+18 Nosegear Steering
+19 Hot Brakes
+20 Brakes On
+21 Brakes Off
+22 Install Tiedowns
+23 Fire
+24 Cut Engine
